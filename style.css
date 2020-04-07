@@ -1,0 +1,100 @@
+body{
+	background-color: #b6b7b8;
+}
+.keyboard {
+
+    width: 715px;
+    margin: 50px auto 0;
+    padding: 5px;
+    padding-left: 0;
+    padding-bottom: 0;
+    background: #070707;
+    border: 3px solid #222222;
+    border-radius: 5px;
+    height: 238px;
+    box-shadow: 10px 8px 5px black;
+}
+
+.btn {
+    float: left;
+    width: 40px;
+    height: 40px;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    font-weight: 500;
+    line-height: 40px;
+    text-align: center;
+    color: #000000;
+    background: #8d4d4d;
+    border-radius: 3px;
+    cursor: pointer;
+    user-select: none;
+    transition: border-radius 0.3s, background-color 0.3s;
+    outline: solid 2px rgb(24, 23, 23);
+    box-shadow: 10px 8px 5px rgb(100, 19, 19);
+}
+
+.clearfix {
+    clear: both;
+}
+.comment {
+    margin-top: 40px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+    
+}
+textarea {
+    font-family: Arial, Helvetica, sans-serif; font-size:25px;
+    width: 800px;
+    height: 200px;
+    margin: 10vh auto 0;
+    display: block;
+    outline: solid 2px rgb(24, 23, 23);
+}
+
+.hidden {
+    display: none;
+}
+
+.clearfix {
+    clear: both;
+}
+
+
+
+.Backspace {
+    width: 100px;
+}
+
+.Tab {
+    width: 54px;
+}
+
+.CapsLock {
+    width: 75px;
+}
+
+.Enter {
+    width: 111px;
+}
+
+.ShiftLeft,
+.ShiftRight {
+    width: 93px;
+}
+
+.ControlLeft,
+.ControlRight {
+    width: 45px;
+}
+
+.Space {
+    width: 318px;
+}
+
+.active {
+    border-radius: 50%;
+    transition: border-radius 0.1s #444444;
+}
