@@ -172,7 +172,8 @@ document.onkeyup = function (event) {
       break;
     default:
 
-      if (!event.keyCode) document.querySelector('.keyboard > .' + event.code + '').classList.remove('active');
+       if (eventCode.indexOf(event.code) != (-1)) 
+         document.querySelector('.keyboard > .' + event.code + '').classList.remove('active');
   }
 
 }
