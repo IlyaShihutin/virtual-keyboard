@@ -13,7 +13,7 @@ const eventKeyCode = [
   16, 122, 120, 99, 118, 98, 110, 109, 44, 46, 47, 38, 16,
   17, 0, 18, 32, 18, 37, 40, 39, 17
 ];
-const KEYILYA = [
+const eventWord = [
 
   [
     "ё", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace",
@@ -46,7 +46,7 @@ const KEYILYA = [
     "Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "↑", "Shift",
     "Ctrl", "win", "Alt", "Space", "Alt", "←", "↓", "→", "Ctrl"
   ],
- 
+
   [
     "Ё", "!", '"', "№", ";", "%", ":", "?", "*", "(", ")", "_", "+", "Backspace",
     "Tab", "Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З", "Х", "Ъ", "/", "Del",
@@ -69,9 +69,9 @@ const body = document.querySelector('body');
 body.insertAdjacentHTML('beforeend', textarea);
 body.insertAdjacentHTML('afterend', '<div class="comment">Change language: Alt + Ctrl <br>Made on Windows</div>');
 
-let KeyBoardSpace = document.createElement('div');
-KeyBoardSpace.className = "keyboard";
-document.body.append(KeyBoardSpace);
+let keyBoardSpace = document.createElement('div');
+keyBoardSpace.className = "keyboard";
+document.body.append(keyBoardSpace);
 let flagLang;
 if (localStorage.getItem('language') === 'English') {
   {
@@ -93,70 +93,71 @@ function init(n) {
     if (i == 14 || i == 29 || i == 42 || i == 55) {
       out += '<div class="clearfix"></div>'
     }
-    out += '<div class="btn ' + eventCode[i] + '" data = "' + eventKeyCode[i] + '">' + KEYILYA[n][i] + '</div>';
+    out += '<div class="btn ' + eventCode[i] + '" data = "' + eventKeyCode[i] + '">' + eventWord[n][i] + '</div>';
   }
   document.querySelector('.keyboard').innerHTML = out;
 }
 
 
 let caps = false;
-let Shift = false;
-const TextArea = document.querySelector('textarea');
+let shift = false;
+const textArea = document.querySelector('textarea');
 
 document.onkeydown = function (event) {
-  switch (eventCode.indexOf(event.code)) {
-    case 13:
-      TextArea.value = TextArea.value.substr(0, TextArea.value.length - 1);
+  if (!eventCode.includes(event.code)) {
+    return;
+  }
+  switch (event.code) {
+    case 'Backspace':
+      textArea.value = textArea.value.substr(0, textArea.value.length - 1);
       break;
-    case 55:
-    case 57:
-    case 59:
-    case 63:
+    case 'ControlLeft':
+    case 'ControlRight':
+    case 'ShiftRight':
+    case 'ShiftLeft':
       CtrlAlt();
       break;
-    case 42:
-    case 54:
+    case 'ShiftRight':
+    case 'ShiftLeft':
       shiftKey();
       break;
-    case 58:
-      TextArea.value += ' ';
+    case 'Space':
+      textArea.value += ' ';
       break;
-    case 41:
-      TextArea.value += '\n';
+    case 'Enter':
+      textArea.value += '\n';
       break;
-    case 14:
-      TextArea.value += '   ';
+    case 'Tab':
+      textArea.value += '   ';
       break;
-    case 29:
+    case 'CapsLock':
       CapsLock();
-      break;
-    case -1:
-      TextArea.value += '';
       break;
     default:
       if (localStorage.getItem('language') === 'English') {
-        if (Shift && !caps) {
-          TextArea.value += KEYILYA[5][eventCode.indexOf(event.code)];
-        } else if (!Shift && !caps) {
-          TextArea.value += KEYILYA[1][eventCode.indexOf(event.code)];
+        if (shift && !caps) {
+          textArea.value += eventWord[5][eventCode.indexOf(event.code)];
+        } else if (!shift && !caps) {
+          console.log(eventCode.indexOf(event.code));
+          textArea.value += eventWord[1][eventCode.indexOf(event.code)];
         }
-        if (!Shift && caps) {
-          TextArea.value += KEYILYA[3][eventCode.indexOf(event.code)];
+        if (!shift && caps) {
+          textArea.value += eventWord[3][eventCode.indexOf(event.code)];
         }
-        if (Shift && caps) {
-          TextArea.value += KEYILYA[1][eventCode.indexOf(event.code)];
+        if (shift && caps) {
+          textArea.value += eventWord[1][eventCode.indexOf(event.code)];
         }
       } else {
-        if (Shift && !caps) {
-          TextArea.value += KEYILYA[4][eventCode.indexOf(event.code)];
-        } else if (!Shift && !caps) {
-          TextArea.value += KEYILYA[0][eventCode.indexOf(event.code)];
+        if (shift && !caps) {
+          textArea.value += eventWord[4][eventCode.indexOf(event.code)];
+        } else if (!shift && !caps) {
+          textArea.value += eventWord[0][eventCode.indexOf(event.code)];
         }
-        if (!Shift && caps) {
-          TextArea.value += KEYILYA[2][eventCode.indexOf(event.code)];
+        if (!shift && caps) {
+          textArea.value += eventWord[2][eventCode.indexOf(event.code)];
         }
-        if (Shift && caps) {
-          TextArea.value += KEYILYA[0][eventCode.indexOf(event.code)];
+        if (shift && caps) {
+          textArea.value += eventWord[0][eventCode.indexOf(event.code)];
         }
 
       }
@@ -165,6 +166,8 @@ document.onkeydown = function (event) {
   if (eventCode.indexOf(event.code) != (-1))
     document.querySelector('.keyboard > .' + event.code + '').classList.add('active');
 }
+
+
 document.onkeyup = function (event) {
   switch (event.keyCode) {
     case 16:
@@ -172,8 +175,8 @@ document.onkeyup = function (event) {
       break;
     default:
 
-       if (eventCode.indexOf(event.code) != (-1)) 
-         document.querySelector('.keyboard > .' + event.code + '').classList.remove('active');
+      if (eventCode.indexOf(event.code) != (-1))
+        document.querySelector('.keyboard > .' + event.code + '').classList.remove('active');
   }
 
 }
@@ -182,20 +185,20 @@ document.onkeyup = function (event) {
 function shiftKey() {
   if (localStorage.getItem('language') === 'Russian') {
     init(4);
-    Shift = true;
+    shift = true;
   } else {
     init(5);
-    Shift = true;
+    shift = true;
   }
 }
 
 function CloseshiftKey() {
   if (localStorage.getItem('language') === 'Russian') {
     init(0);
-    Shift = false;
+    shift = false;
   } else {
     init(1);
-    Shift = false;
+    shift = false;
   }
 }
 
@@ -224,6 +227,7 @@ function CapsLock() {
 }
 let flag;
 let smena = false;
+
 function CtrlAlt() {
   document.addEventListener('keydown', (event) => {
     if (event.keyCode == 17) flag = true;
@@ -255,7 +259,7 @@ function CtrlAlt() {
 document.querySelector('.keyboard').onclick = function (event) {
   switch (eventKeyCode.indexOf(Number(event.target.getAttribute('data')))) {
     case 13:
-      TextArea.value = TextArea.value.substr(0, TextArea.value.length - 1);
+      textArea.value = textArea.value.substr(0, textArea.value.length - 1);
       break;
     case 55:
     case 57:
@@ -264,16 +268,16 @@ document.querySelector('.keyboard').onclick = function (event) {
       CtrlAlt();
       break;
     case 58:
-      TextArea.value += ' ';
+      textArea.value += ' ';
       break;
     case 41:
-      TextArea.value += '\n';
+      textArea.value += '\n';
       break;
     case 14:
-      TextArea.value += '   ';
+      textArea.value += '   ';
       break;
     case 56:
-      TextArea.value += '';
+      textArea.value += '';
       break;
     case 29:
       CapsLock();
@@ -282,37 +286,39 @@ document.querySelector('.keyboard').onclick = function (event) {
     default:
 
       if (localStorage.getItem('language') === 'English') {
-        if (Shift && !caps) {
-          TextArea.value += KEYILYA[5][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
-        } else if (!Shift && !caps) {
-          TextArea.value += KEYILYA[1][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
+        if (shift && !caps) {
+          textArea.value += eventWord[5][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
+        } else if (!shift && !caps) {
+          console.log(eventWord[1][Number(event.target.getAttribute('data'))]);
+          console.log(eventWord[1][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))])
+          textArea.value += eventWord[1][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
         }
-        if (!Shift && caps) {
-          TextArea.value += KEYILYA[3][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
+        if (!shift && caps) {
+          textArea.value += eventWord[3][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
         }
-        if (Shift && caps) {
-          TextArea.value += KEYILYA[1][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
+        if (shift && caps) {
+          textArea.value += eventWord[1][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
         }
       } else {
-        if (Shift && !caps) {
-          TextArea.value += KEYILYA[4][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
-        } else if (!Shift && !caps) {
-          TextArea.value += KEYILYA[0][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
+        if (shift && !caps) {
+          textArea.value += eventWord[4][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
+        } else if (!shift && !caps) {
+          textArea.value += eventWord[0][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
         }
-        if (!Shift && caps) {
-          TextArea.value += KEYILYA[2][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
+        if (!shift && caps) {
+          textArea.value += eventWord[2][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
         }
-        if (Shift && caps) {
-          TextArea.value += KEYILYA[0][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
+        if (shift && caps) {
+          textArea.value += eventWord[0][eventKeyCode.indexOf(Number(event.target.getAttribute('data')))];
         }
       }
   }
 
   if (eventKeyCode.indexOf(Number(event.target.getAttribute('data'))) == 29) {
-    if (caps) { document.querySelector('.keyboard > .' + 'CapsLock' + '').classList.add('active'); }
-    else document.querySelector('.keyboard > .' + 'CapsLock' + '').classList.remove('active');
-  }
-  else {
+    if (caps) {
+      document.querySelector('.keyboard > .' + 'CapsLock' + '').classList.add('active');
+    } else document.querySelector('.keyboard > .' + 'CapsLock' + '').classList.remove('active');
+  } else {
     if (!event.target.classList.contains('keyboard')) event.target.classList.add('active');
     setTimeout(TimeOut, 200);
   }
